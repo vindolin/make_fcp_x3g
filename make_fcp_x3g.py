@@ -312,11 +312,13 @@ def adjust_final_z():
             pattern3 = re.compile(r'^(G1 [^;]*Z)\d*\.?\d+(.*)$')
 
             for i, line in enumerate(lines):
+
                 match = pattern1.search(line)
                 if match:
                     z = float(match.group(1))
                     highest_z = max(highest_z, z)
-                    match = pattern2.search(line)
+
+                match = pattern2.search(line)
                 if match:
                     final_z = float(match.group(1))
                     final_index = i
