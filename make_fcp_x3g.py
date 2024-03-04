@@ -254,11 +254,11 @@ def sanity_check(o_handle=None):
     if GPX:
         fail = gpx_insane(o_handle)
     if DUALSTRUDE_SCRIPT:
-        fail = postproc_script_insane(o_handle, 'DUALSTRUDE_SCRIPT', *DUALSTRUDE_SCRIPT)
+        fail = postproc_script_insane(o_handle, 'DUALSTRUDE_SCRIPT', DUALSTRUDE_SCRIPT)
     if PWM_SCRIPT:
-        fail = postproc_script_insane(o_handle, 'PWM_SCRIPT', *PWM_SCRIPT)
+        fail = postproc_script_insane(o_handle, 'PWM_SCRIPT', PWM_SCRIPT)
     if RETRACT_SCRIPT:
-        fail = postproc_script_insane(o_handle, 'RETRACT_SCRIPT', *RETRACT_SCRIPT)
+        fail = postproc_script_insane(o_handle, 'RETRACT_SCRIPT', RETRACT_SCRIPT)
     if os.path.isfile('/proc/version'):
         fail = wsl_insane(o_handle)
 
