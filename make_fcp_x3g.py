@@ -468,13 +468,11 @@ if not no_postproc:
         copy_file('temporary', tmpname, inputfile)
         os.unlink(tmpname)
 
-    if postproc_script_valid(RETRACT_SCRIPT):
-        pass
-        # run_script('retraction', inputfile, *RETRACT_SCRIPT)
+    # if postproc_script_valid(RETRACT_SCRIPT):
+    #     run_script('retraction', inputfile, *RETRACT_SCRIPT)
 
-    if postproc_script_valid(PWM_SCRIPT):
-        pass
-        # run_script('fan PWM post-processing', inputfile, *PWM_SCRIPT)
+    # if postproc_script_valid(PWM_SCRIPT):
+    #     run_script('fan PWM post-processing', inputfile, *PWM_SCRIPT)
 
 
 if os.path.isfile(GPX) and os.access(GPX, os.X_OK):
