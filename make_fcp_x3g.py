@@ -15,8 +15,8 @@ VERSION = '20211215'
 # allow this because it would hide configuration mistakes.
 
 EXTRA_PATH = ''
-KEEP_ORIG = 0
-DEBUG = 0
+keep_orig = 0
+debug = 0
 
 GPX = ''
 
@@ -51,7 +51,7 @@ no_postproc = args.P
 force_progress = args.p
 exit_sleep = args.s
 verbose = args.v
-DEBUG = 1 if args.d else 0
+debug = 1 if args.d else 0
 
 # Try to parse input file argument already, such that we can at least try to
 # write a FAIL file if -d and something fatal happens in the early stages.
@@ -68,7 +68,7 @@ def do_exit(code):
 
 def fatality(err, *msgs):
     print(*msgs, file=sys.stderr)
-    if DEBUG and fail_file:
+    if debug and fail_file:
         try:
             with open(fail_file, 'a') as f_handle:
                 print(*msgs, file=f_handle)
@@ -136,6 +136,7 @@ def read_config(f_path):
 
                 # Assign the variable.
                 if item in item_single:
+                    # print(item, vals[0])
                     globals()[item] = vals[0] if vals else ''
                     if len(vals) > 1:
                         config_warnings.append(f"An array was specified for SINGLE item '{item}', only using first element.")
@@ -365,11 +366,13 @@ outputfile = os.environ.get('SLIC3R_PP_OUTPUT_NAME', inputfile)
 out_base = outputfile
 if out_base is not None:
     out_base = os.path.splitext(out_base)[0]
+
 origfile = f"{out_base}_orig.gcode" if out_base is not None else None
 # Avoid making a possibly invisible file
 out_base = 'make_fcp_x3g' if out_base == '' else out_base
 warn_file = f"{out_base}.WARN.txt" if out_base is not None else None
 fail_file = f"{out_base}.FAIL.txt" if out_base is not None else None
+
 if out_base is not None:
     if os.path.exists(warn_file):
         os.remove(warn_file)
@@ -381,10 +384,10 @@ if conf_file:
     read_config(conf_file)
 
 # If config changed these, command line arguments still get precedence
-if '-k' in sys.argv:
-    KEEP_ORIG = 1
-if '-d' in sys.argv:
-    DEBUG = 1
+if args.k:
+    keep_orig = 1
+if args.d:
+    debug = 1
 
 if exit_sleep is not None and not re.match(r'^\d?\.?\d+$', str(exit_sleep)):
     # Since someone is probably trying to add the -s argument to catch an
@@ -403,7 +406,7 @@ if EXTRA_PATH:
 if not inputfile or inputfile == '':
     fatality(2, "ERROR: argument should be the path to a .gcode file.\nRun this script with -h for usage information.")
 
-if DEBUG:
+if debug:
     check_out = os.path.join(os.path.dirname(outputfile), 'make_fcp_x3g_check.txt')
     try:
         with open(check_out, 'w') as o_handle:
@@ -428,7 +431,7 @@ arg_p = '-p' if force_progress else ''
 if not no_postproc:
     arg_p = '-p'
 
-    if KEEP_ORIG:
+    if keep_orig:
         copy_file('original', inputfile, origfile)
 
     if FINAL_Z_MOVE:
