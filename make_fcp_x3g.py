@@ -136,7 +136,6 @@ def read_config(f_path):
 
                 # Assign the variable.
                 if item in item_single:
-                    # print(item, vals[0])
                     globals()[item] = vals[0] if vals else ''
                     if len(vals) > 1:
                         config_warnings.append(f"An array was specified for SINGLE item '{item}', only using first element.")
@@ -189,7 +188,7 @@ def gpx_insane(o_handle):
     return 0
 
 
-def postproc_script_insane(o_handle, name, *script_config):
+def postproc_script_insane(o_handle, name, script_config):
     for exc in script_config[0]:
         if not (os.path.isfile(exc) and os.access(exc, os.X_OK)):
             print(f"Check failed: the first element in the '{name}' list does not point to an executable file: {exc}", file=o_handle)
@@ -270,7 +269,7 @@ def sanity_check(o_handle=None):
             print("All checks seem OK!", file=o_handle)
 
 
-def run_script(name, gcode, *cmd):
+def run_script(name, gcode, cmd):
     print(f"Running {name} script...")
     tmpname = tempfile.mktemp()
     cmd = ' '.join(map(shell_escape, cmd))
@@ -453,7 +452,7 @@ if not no_postproc:
                 m83_seen = True
 
     if dualstrude and postproc_script_valid(DUALSTRUDE_SCRIPT):
-        run_script('dualstrusion', inputfile, *DUALSTRUDE_SCRIPT)
+        run_script('dualstrusion', inputfile, DUALSTRUDE_SCRIPT)
     elif left_right and m104_seen:
         fix_m104 = True
 
